@@ -1005,23 +1005,23 @@ function resetMap() {
     map.setZoom(10);
 
     // Add a "You are here" marker
-    var userMarker = new google.maps.Marker({
-      position: new google.maps.LatLng(userLocation.lat, userLocation.lng),
-      map: map,
-      title: 'Your Location',
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: '#4285F4',
-        fillOpacity: 0.7,
-        strokeColor: 'white',
-        strokeWeight: 2
-      },
-      animation: google.maps.Animation.DROP
-    });
+//     var userMarker = new google.maps.Marker({
+//       position: new google.maps.LatLng(userLocation.lat, userLocation.lng),
+//       map: map,
+//       title: 'Your Location',
+//       icon: {
+//         path: google.maps.SymbolPath.CIRCLE,
+//         scale: 10,
+//         fillColor: '#4285F4',
+//         fillOpacity: 0.7,
+//         strokeColor: 'white',
+//         strokeWeight: 2
+//       },
+//       animation: google.maps.Animation.DROP
+//     });
 
-    markers.push(userMarker);
-  }
+//     markers.push(userMarker);
+//   }
 
   // Show welcome message again
   var welcomeInfoWindow = new google.maps.InfoWindow({
