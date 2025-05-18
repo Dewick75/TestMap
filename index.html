@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Maps Distance Calculator</title>
+  <link rel="stylesheet" href="view.css">
+  <!-- Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Google Maps Distance Calculator</h1>
+
+    <div class="search-panel">
+      <div class="location-header">
+        <h2>Origin Location</h2>
+        <div class="location-help" title="Enter the starting point of your journey">
+          <i class="fas fa-question-circle"></i>
+        </div>
+      </div>
+      <div id="originLocationField" class="locationField">
+        <i class="fas fa-map-marker-alt location-icon origin-icon"></i>
+        <input id="originautocomplete" placeholder="Enter your origin address" type="text">
+        <button type="button" class="location-button" onclick="useCurrentLocation()" title="Use your current location">
+          <i class="fas fa-crosshairs"></i>
+        </button>
+      </div>
+
+      <div class="location-header">
+        <h2>Destination Location</h2>
+        <div class="location-help" title="Enter where you want to go">
+          <i class="fas fa-question-circle"></i>
+        </div>
+      </div>
+      <div id="destinationLocationField" class="locationField">
+        <i class="fas fa-flag-checkered location-icon destination-icon"></i>
+        <input id="destinationautocomplete" placeholder="Enter your destination address" type="text">
+      </div>
+
+      <!-- Waypoints container -->
+      <div id="waypoints-container">
+        <!-- Waypoints will be added here dynamically -->
+      </div>
+
+      <div class="waypoint-controls">
+        <button type="button" class="secondary-button" onclick="addWaypoint()">
+          <i class="fas fa-plus"></i> Add Stop
+        </button>
+        <button type="button" class="secondary-button" onclick="removeWaypoint()" id="remove-waypoint" style="display: none;">
+          <i class="fas fa-minus"></i> Remove Stop
+        </button>
+      </div>
+
+      <div class="button-container">
+        <button type="button" class="primary-button" onclick="calculateFullRoute()">
+          <i class="fas fa-route"></i> Find Travel Distance
+        </button>
+        <button type="button" class="secondary-button" onclick="clearAll()">
+          <i class="fas fa-undo"></i> Clear All
+        </button>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="result-header">
+        <strong><i class="fas fa-thumbs-up"></i> Recommended Route</strong>
+      </div>
+      <div id="outputRecommended" class="result-box"></div>
+      <div class="result-header">
+        <strong><i class="fas fa-road"></i> Longest Alternative Route</strong>
+      </div>
+      <div id="output" class="result-box"></div>
+      <div id="total-distance-container" style="display: none;">
+        <div class="result-header">
+          <strong><i class="fas fa-ruler"></i> Total Multi-Stop Distance</strong>
+        </div>
+        <div id="total-distance" class="result-box"></div>
+      </div>
+    </div>
+
+    <div class="solid-container">
+      <h3 class="section-title">Route Map</h3>
+      <div id="map-container">
+        <div id="map" style="height: 400px; width: 100%;"></div>
+        <div id="map-fallback" style="display: none; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+          <p><strong>Map not loading?</strong> Try refreshing the page or check your internet connection.</p>
+          <button onclick="reloadMap()" class="btn btn-primary">Reload Map</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Function to reload the map if it fails to load
+      function reloadMap() {
+        var mapDiv = document.getElementById('map');
+        var fallbackDiv = document.getElementById('map-fallback');
+
+        // Hide fallback message
+        fallbackDiv.style.display = 'none';
+
+        // Show loading message
+        mapDiv.innerHTML = '<div class="map-loading">Reloading map...</div>';
+        mapDiv.style.display = 'block';
+
+        // Reinitialize the map
+        if (typeof initAutocomplete === 'function') {
+          setTimeout(initAutocomplete, 500);
+        } else {
+          // If function not available, reload the page
+          window.location.reload();
+        }
+      }
+
+      // Check if map loads properly
+      setTimeout(function() {
+        var mapDiv = document.getElementById('map');
+        var fallbackDiv = document.getElementById('map-fallback');
+
+        // If map is empty or still shows loading message after 10 seconds
+        if (!mapDiv.querySelector('.gm-style') && mapDiv.innerHTML.includes('map-loading')) {
+          console.error("Map failed to load properly");
+          mapDiv.style.display = 'none';
+          fallbackDiv.style.display = 'block';
+        }
+      }, 10000);
+    </script>
+
+    <div class="help-panel">
+      <div class="help-toggle" onclick="toggleHelp()">
+        <i class="fas fa-question-circle"></i> Need Help?
+      </div>
+      <div class="help-content" id="helpContent">
+        <h3>How to Use This Tool</h3>
+        <ol>
+          <li>Enter your starting point in the <strong>Origin Location</strong> field or click the <i class="fas fa-crosshairs"></i> icon to use your current location</li>
+          <li>Enter your destination in the <strong>Destination Location</strong> field</li>
+          <li>For multi-stop journeys:
+            <ul>
+              <li>Click <strong>Add Stop</strong> to add intermediate stops</li>
+              <li>Your initial destination becomes Stop 1</li>
+              <li>Enter your final destination in the destination field</li>
+              <li>Add more stops as needed for your journey</li>
+            </ul>
+          </li>
+          <li>Click <strong>Find Travel Distance</strong> to calculate the route</li>
+          <li>View the journey details:
+            <ul>
+              <li>For direct routes: see the recommended and longest alternative routes</li>
+              <li>For multi-stop journeys: see the total distance and a breakdown of each segment</li>
+            </ul>
+          </li>
+          <li>Explore the route on the map - you can zoom, drag, and switch to satellite view</li>
+        </ol>
+        <p><small>Note: Location access is used to determine your current location when requested and to improve address suggestions.</small></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple help toggle function
+    function toggleHelp() {
+      var helpContent = document.getElementById('helpContent');
+      helpContent.style.display = helpContent.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Clear all inputs and reset the map
+    function clearAll() {
+      document.getElementById('originautocomplete').value = '';
+      document.getElementById('destinationautocomplete').value = '';
+      document.getElementById('outputRecommended').innerHTML = '';
+      document.getElementById('output').innerHTML = '';
+
+      // Clear waypoints
+      const waypointsContainer = document.getElementById('waypoints-container');
+      waypointsContainer.innerHTML = '';
+
+      // Reset waypoint counter and autocompletes
+      if (typeof waypointCount !== 'undefined') {
+        waypointCount = 0;
+        waypointAutocompletes = [];
+      }
+
+      // Hide remove waypoint button
+      document.getElementById('remove-waypoint').style.display = 'none';
+
+      // Hide total distance container
+      document.getElementById('total-distance-container').style.display = 'none';
+      document.getElementById('total-distance').innerHTML = '';
+
+      // Reset the map (this function will be added to the JS file)
+      if (typeof resetMap === 'function') {
+        resetMap();
+      } else {
+        // Fallback if resetMap isn't defined yet
+        location.reload();
+      }
+    }
+  </script>
+
+  <script src="googleMapDistanceApi.js"></script>
+  <!-- Google Maps API with Places library from gomaps.pro -->
+  <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyTAgAPdVcUSQ4Dqym54RfvDjOjmEQ3Et1H&libraries=places&callback=initAutocomplete" async defer></script>
+
+  <!-- Debug script to check for map errors -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error("Error: ", message, "at", source, ":", lineno, ":", colno);
+      if (error) console.error(error);
+
+      // Check if map is initialized
+      setTimeout(function() {
+        if (!window.map || document.getElementById('map').innerHTML.includes('map-loading')) {
+          console.error("Map failed to initialize properly");
+          document.getElementById('map').innerHTML = '<div class="map-error">Map failed to load. Please refresh the page and try again.</div>';
+        }
+      }, 5000);
+
+      return false;
+    };
+  </script>
+</body>
+</html>

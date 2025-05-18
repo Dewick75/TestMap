@@ -1,0 +1,490 @@
+/* Import Google Roboto font */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+/* Base styles */
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #333;
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Container layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 100%;
+  overflow-y: visible;
+}
+
+h1 {
+  text-align: center;
+  color: #4285F4;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #4285F4;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+/* Search panel styles */
+.search-panel {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.location-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.location-help {
+  color: #4285F4;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.location-help:hover {
+  color: #3367D6;
+}
+
+.locationField {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.location-button {
+  background: none;
+  border: none;
+  color: #4285F4;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 10px;
+  height: 40px;
+  transition: color 0.3s;
+}
+
+.location-button:hover {
+  color: #3367D6;
+}
+
+.location-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4285F4;
+  z-index: 10;
+  font-size: 18px;
+}
+
+.origin-icon {
+  color: #34A853; /* Google Maps green */
+}
+
+.destination-icon {
+  color: #EA4335; /* Google Maps red */
+}
+
+#originautocomplete,
+#destinationautocomplete {
+  flex: 1;
+  height: 40px;
+  padding: 8px 12px 8px 40px; /* Added left padding for icon */
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+#originautocomplete:focus,
+#destinationautocomplete:focus {
+  border-color: #4285F4;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Waypoints styling */
+#waypoints-container {
+  margin-bottom: 15px;
+}
+
+.waypoint-field {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+.waypoint-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FBBC05; /* Google Maps yellow */
+  z-index: 10;
+  font-size: 18px;
+}
+
+.waypoint-input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px 8px 40px; /* Added left padding for icon */
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.waypoint-input:focus {
+  border-color: #FBBC05;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.2);
+}
+
+.waypoint-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.waypoint-number {
+  display: inline-block;
+  background-color: #FBBC05;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.primary-button, .secondary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.primary-button {
+  background-color: #4285F4;
+  color: white;
+  flex: 2;
+}
+
+.primary-button:hover {
+  background-color: #3367D6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-button {
+  background-color: #f5f5f5;
+  color: #666;
+  flex: 1;
+}
+
+.secondary-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Results panel styles */
+.results-panel {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  color: #4285F4;
+}
+
+.result-header i {
+  font-size: 18px;
+}
+
+.result-box {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 5px 0 20px 0;
+  min-height: 20px;
+  transition: all 0.3s;
+  border-left: 3px solid #4285F4;
+}
+
+.result-box:empty {
+  border-left-color: #ddd;
+}
+
+.result-box:not(:empty) {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Journey breakdown styles */
+.journey-segment {
+  margin-top: 10px;
+  padding: 5px 0;
+}
+
+.journey-point {
+  padding: 8px;
+  margin: 5px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.journey-point i {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.journey-arrow {
+  padding: 5px 8px 5px 30px;
+  color: #666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.journey-arrow i {
+  margin-right: 10px;
+  color: #4285F4;
+}
+
+/* Help panel styles */
+.help-panel {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.help-toggle {
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  color: #4285F4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.help-toggle:hover {
+  background-color: #e0e0e0;
+}
+
+.help-toggle i {
+  font-size: 18px;
+}
+
+.help-content {
+  padding: 0 20px 20px;
+  display: none;
+}
+
+.help-content h3 {
+  color: #4285F4;
+  margin: 15px 0 10px;
+}
+
+.help-content ol {
+  padding-left: 25px;
+  margin: 10px 0;
+}
+
+.help-content ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.help-content li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.help-content ul li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.help-content p {
+  margin: 10px 0 0;
+  color: #666;
+}
+
+/* Solid container for map */
+.solid-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Map container */
+#map-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Map styles */
+#map {
+  flex-grow: 1;
+  height: 400px !important; /* Force height */
+  min-height: 400px;
+  width: 100% !important; /* Force width */
+  border-radius: 8px;
+  position: relative;
+  z-index: 1; /* Ensure map is above other elements */
+  overflow: visible !important;
+  background-color: #f8f9fa; /* Light background color */
+  border: 1px solid #e0e0e0;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Fix for Google Maps controls */
+#map .gm-style-cc,
+#map .gmnoprint {
+  z-index: 2 !important;
+}
+
+/* Make sure the map canvas is visible */
+#map > div {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Ensure route lines are visible */
+#map .gm-style > div:first-child > div:nth-child(4) {
+  z-index: 100 !important;
+}
+
+/* Map loading and error messages */
+.map-loading, .map-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #4285F4;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.map-error {
+  color: #d32f2f;
+}
+
+/* Info window styling */
+.info-window {
+  padding: 5px;
+  max-width: 250px;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.info-window h3 {
+  margin-top: 0;
+  color: #4285F4;
+  font-size: 16px;
+}
+
+.info-window p {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+/* Custom map controls */
+.custom-map-control {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  margin: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #4285F4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  #map {
+    height: 300px;
+  }
+}
